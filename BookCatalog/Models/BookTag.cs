@@ -1,4 +1,6 @@
-﻿namespace BookCatalog.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BookCatalog.Models
 {
     public class BookTag
     {

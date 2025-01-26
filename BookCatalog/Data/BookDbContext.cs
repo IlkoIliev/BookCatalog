@@ -16,12 +16,25 @@ namespace BookCatalog.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<BookTag>()
+            .HasKey(bt => new { bt.BookId, bt.TagId });
+
+            modelBuilder.Entity<BookTag>()
+                .HasOne(bt => bt.Book)
+                .WithMany(b => b.BookTags)
+                .HasForeignKey(bt => bt.BookId);
+
+            modelBuilder.Entity<BookTag>()
+                .HasOne(bt => bt.Tag)
+                .WithMany(t => t.BookTags)
+                .HasForeignKey(bt => bt.TagId);
+
             // Seed данни (по желание)
             modelBuilder.Entity<Genre>().HasData(
                 new Genre { GenreId = 1, Name = "Фантастика" },
                 new Genre { GenreId = 2, Name = "Трилър" },
                 new Genre { GenreId = 3, Name = "Роман" },
-                new Genre { GenreId = 3, Name = "Повест" }
+                new Genre { GenreId = 4, Name = "Повест" }
             );
         }
 
