@@ -1,0 +1,33 @@
+﻿@model BookCatalog.Models.BookModels.CreateBookViewModel
+
+<h2>Добавяне на книга</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AuthorId">Автор</label>
+        <select asp-for="AuthorId" asp-items="ViewBag.AuthorId" class="form-control">
+            <option value="">Please select the author</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GenreId">Жанр</label>
+        <select asp-for="GenreId" asp-items="ViewBag.GenreId" class="form-control">
+            <option value="">Please select a genre</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageFile">Качи снимка</label>
+        <input type="file" asp-for="ImageFile" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Запази</button>
+</form>
+
+

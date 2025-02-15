@@ -6,6 +6,7 @@ namespace BookCatalog.Data
     public class BookDbContext : DbContext
     {
         public BookDbContext(DbContextOptions<BookDbContext> options) : base(options) { }
+
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Genre> Genres { get; set; }
@@ -16,8 +17,16 @@ namespace BookCatalog.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Връзка между Book и Author (1 към Много)
+            modelBuilder.Entity<Book>()
+                .HasOne(b => b.Author)
+                .WithMany(a => a.Books)
+                .HasForeignKey(b => b.AuthorId)
+                .OnDelete(DeleteBehavior.Cascade); // Ако авторът бъде изтрит, книгите също ще бъдат премахнати
+
+            // Връзка между BookTag и Book/Tag (Много към Много)
             modelBuilder.Entity<BookTag>()
-            .HasKey(bt => new { bt.BookId, bt.TagId });
+                .HasKey(bt => new { bt.BookId, bt.TagId });
 
             modelBuilder.Entity<BookTag>()
                 .HasOne(bt => bt.Book)
@@ -36,7 +45,12 @@ namespace BookCatalog.Data
                 new Genre { GenreId = 3, Name = "Роман" },
                 new Genre { GenreId = 4, Name = "Повест" }
             );
-        }
 
+            modelBuilder.Entity<Author>().HasData(
+                new Author { AuthorId = 1, Name = "Дж. Р. Р. Толкин" },
+                new Author { AuthorId = 2, Name = "Айзък Азимов" },
+                new Author { AuthorId = 3, Name = "Стивън Кинг" }
+            );
+        }
     }
 }
